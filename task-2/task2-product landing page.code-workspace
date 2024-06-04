@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "../task1-product landing page"
+		}
+	],
+	"settings": {
+		"liveServer.settings.multiRootWorkspaceName": "task2-product landing page"
+	}
+}

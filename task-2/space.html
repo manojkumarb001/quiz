@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Space Quiz</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body{
+        background-image:url("space.jpeg")
+            }    </style>
+</head>
+<body>
+    <header>
+        <div class="head-sec">
+        <h1 id="head">Welcome to the MyQUIZ App</h1></div><br>
+        <label><h2>Select the Domain:</h2></label><br>
+        <form>
+
+            <select name="change" onchange="window.location.href=this.value;">
+                <option>Choose the Quiz Domain</option>
+                <option value="math.html">Math</option>
+                <option value="geography.html">Geography</option>
+                <option value="history.html">History</option>
+                <option value="space.html">Space</option>
+                
+
+            </select>
+        </form>
+        
+    </header>
+            <div id="space">
+                <div class="container">
+                    <h1 id="head">Welcome to the Space QUIZ </h1>
+                    <div id="quiz-container">
+                       
+                    </div>
+                    
+                    <div id="timer">Time Left: 60 seconds</div>
+            
+                    <div id="result" class="result">
+                        <p>Number of Correct Answers: <span id="correct-answers">0</span></p>
+                        <p>Your IQ Level is: <span id="iq-level"></span></p>
+                    </div>
+                </div></div>
+
+               
+                <script>
+                                    
+                    const questions = [
+    {
+        question: "Which planet is covered by clouds of sulphuric acid? ",
+        options: ["a) Saturn", "b)Mercury ", "c)Venus "],
+        correctAnswer: "c"
+    },
+    {
+        question: "What is the term for a natural satellite?",
+        options: ["a) Moon", "b) Sun", "c) Asteroid"],
+        correctAnswer: "a"
+    },
+    {
+        question: " Which is the largest planet in the solar system?",
+        options: ["a) Jupiter", "b) Uranus", "c) Saturn"],
+        correctAnswer: "a"
+    },
+    {
+        question: " What is the smallest planet in the solar system?",
+        options: ["a)Mercury ", "b) Pluto", "c) Venus"],
+        correctAnswer: "b"
+    },
+    {
+        question: " Which planet has the fastest rotation?",
+        options: ["a) Earth", "b) Jupiter", "c) Mars"],
+        correctAnswer: "b"
+    }
+];
+const iqLevelElement = document.getElementById('iq-level');
+const correctAnswersElement = document.getElementById('correct-answers');
+const timerElement = document.getElementById('timer');
+const resultContainer = document.getElementById('result');
+let currentQuestion = 0;
+let correctAnswers = 0;
+let timer = 60;
+
+function displayQuestion() {
+    const questionContainer = document.getElementById('quiz-container');
+    questionContainer.innerHTML = `
+        <div class="question">
+            <p>${questions[currentQuestion].question}</p>
+            <div class="options">
+                ${questions[currentQuestion].options.map(option => `<div class="option">${option}</div>`).join('')}
+            </div>
+        </div>
+    `;
+
+    const options = document.querySelectorAll('.option');
+    options.forEach(option => {
+        option.addEventListener('click', () => checkAnswer(option));
+    });
+}
+
+function updateTimer() {
+    timerElement.innerText = `Time Left: ${timer} seconds`;
+    if (timer === 0) {
+        finishQuiz();
+    }
+    timer--;
+}
+
+
+function checkAnswer(selectedOption) {
+    const answer = selectedOption.innerText.charAt(0);
+    if (answer === questions[currentQuestion].correctAnswer) {
+        correctAnswers++;
+        selectedOption.style.backgroundColor = 'green';
+    } else {
+        selectedOption.style.backgroundColor = 'red';
+    }
+
+    setTimeout(() => {
+        currentQuestion++;
+        if (currentQuestion < questions.length) {
+            displayQuestion();
+        } else {
+            finishQuiz();
+        }
+    }, 1000);
+}
+
+function finishQuiz() {
+    clearInterval(interval);
+    const questionContainer = document.getElementById('quiz-container');
+    questionContainer.innerHTML = '';
+    correctAnswersElement.innerText = correctAnswers;
+    iqLevelElement.innerText = calculateIQ();
+    resultContainer.style.display = 'block';
+}
+
+function calculateIQ() {
+    const percentage = (correctAnswers / questions.length) * 100;
+    if (percentage >= 80) {
+        return 'Genius';
+    } else if (percentage >= 60) {
+        return 'Above Average';
+    } else if (percentage >= 40) {
+        return 'Average';
+    } else {
+        return 'Below Average';
+    }
+}
+
+displayQuestion();
+const interval = setInterval(updateTimer, 1000);
+                </script>
+                 <footer>
+                    <p>&copy; 2023 MyQuiz. All rights reserved.</p>
+                </footer>
+</body>
+</html>

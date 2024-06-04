@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Geography Quiz</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body{
+        background-image:url("geography.jpeg")
+            }    </style>
+</head>
+<body>
+    <header>
+        <div class="head-sec">
+        <h1 id="head">Welcome to the MyQUIZ App</h1></div><br>
+        <label><h2>Select the Domain:</h2></label><br>
+        <form>
+
+            <select name="change" onchange="window.location.href=this.value;">
+                <option>Choose the Quiz Domain</option>
+                <option value="math.html">Math</option>
+                <option value="geography.html">Geography</option>
+                <option value="history.html">History</option>
+                <option value="space.html">Space</option>
+                
+
+            </select>
+        </form>
+        
+    </header>
+            <div id="space">
+                <div class="container">
+                    <h1 id="head">Welcome to the Geography QUIZ </h1>
+                    <div id="quiz-container">
+                        
+                    </div>
+                    
+                    <div id="timer">Time Left: 60 seconds</div>
+            
+                    <div id="result" class="result">
+                        <p>Number of Correct Answers: <span id="correct-answers">0</span></p>
+                        <p>Your IQ Level is: <span id="iq-level"></span></p>
+                    </div>
+                </div></div>
+
+               
+                <script>
+                                    
+                    const questions = [
+    {
+        question: "Which country has the largest population in the world?",
+        options: ["a) China", "b) India", "c) America"],
+        correctAnswer: "a"
+    },
+    {
+        question: "What is the name of the largest country in the world?",
+        options: ["a) Russia", "b) America", "c) China"],
+        correctAnswer: "a"
+    },
+    {
+        question: "What is the name of the smallest country in the world?",
+        options: ["a) Alexandria", "b) The Vatican City", "c) Antioch"],
+        correctAnswer: "b"
+    },
+    {
+        question: "  What is the coldest place on Earth?",
+        options: ["a) Antarctica", "b) Switzerland", "c) Canada"],
+        correctAnswer: "a"
+    },
+    {
+        question: "What is the largest continent by land area?",
+        options: ["a) Europe", "b) Asia", "c) Australia"],
+        correctAnswer: "b"
+    }
+];
+const iqLevelElement = document.getElementById('iq-level');
+const correctAnswersElement = document.getElementById('correct-answers');
+const timerElement = document.getElementById('timer');
+const resultContainer = document.getElementById('result');
+let currentQuestion = 0;
+let correctAnswers = 0;
+let timer = 60;
+
+function displayQuestion() {
+    const questionContainer = document.getElementById('quiz-container');
+    questionContainer.innerHTML = `
+        <div class="question">
+            <p><b>${questions[currentQuestion].question}</b></p>
+            <div class="options">
+                ${questions[currentQuestion].options.map(option => `<div class="option">${option}</div>`).join('')}
+            </div>
+        </div>
+    `;
+
+    const options = document.querySelectorAll('.option');
+    options.forEach(option => {
+        option.addEventListener('click', () => checkAnswer(option));
+    });
+}
+
+function updateTimer() {
+    timerElement.innerText = `Time Left: ${timer} seconds`;
+    if (timer === 0) {
+        finishQuiz();
+    }
+    timer--;
+}
+
+
+function checkAnswer(selectedOption) {
+    const answer = selectedOption.innerText.charAt(0);
+    if (answer === questions[currentQuestion].correctAnswer) {
+        correctAnswers++;
+        selectedOption.style.backgroundColor = 'green';
+    } else {
+        selectedOption.style.backgroundColor = 'red';
+    }
+
+    setTimeout(() => {
+        currentQuestion++;
+        if (currentQuestion < questions.length) {
+            displayQuestion();
+        } else {
+            finishQuiz();
+        }
+    }, 1000);
+}
+
+function finishQuiz() {
+    clearInterval(interval);
+    const questionContainer = document.getElementById('quiz-container');
+    questionContainer.innerHTML = '';
+    correctAnswersElement.innerText = correctAnswers;
+    iqLevelElement.innerText = calculateIQ();
+    resultContainer.style.display = 'block';
+}
+
+function calculateIQ() {
+    const percentage = (correctAnswers / questions.length) * 100;
+    if (percentage >= 80) {
+        return 'Genius';
+    } else if (percentage >= 60) {
+        return 'Above Average';
+    } else if (percentage >= 40) {
+        return 'Average';
+    } else {
+        return 'Below Average';
+    }
+}
+
+displayQuestion();
+const interval = setInterval(updateTimer, 1000);
+                </script>
+                 <footer>
+                    <p>&copy; 2023 MyQuiz. All rights reserved.</p>
+                </footer>
+</body>
+</html>
